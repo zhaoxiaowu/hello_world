@@ -1,0 +1,21 @@
+ehcache：在极短时间，做相同的查询，访问数据库是很耗资源的。
+
+mybatis的一级缓存是sqlsession    每个sqlsession是相互独立的
+
+
+mybatis的二级缓存是mapper级别的缓存
+
+MyBatis支持二级缓存的总开关：全局配置变量参数 cacheEnabled=true
+        <!-- 二级缓存开启 -->
+        <setting name="cacheEnabled" value="true" />
+
+
+二级缓存相对与一级缓存    二级缓存范围更大  多个sqlsession可以共享一个mapper中的二级缓存位置
+
+
+跟据namespace来区分不同的mapping  
+
+mybatis无法进行分布式缓存
+
+<mapper namespace="">
+<cache type="">开启eccache二级缓存

@@ -1,0 +1,10 @@
+httpClient  支持HTTP协议的客户端编程工具包      用于从客户端发送http请求到服务端                                                                                       
+
+CloseableHttpClient httpClient = HttpClients.createDefault();
+
+NameValuePair是简单名称值对节点类型。多用于Java像url发送Post请求。在发送post请求时用该list来存放参数。
+
+
+websocket+activemq订阅发布模式实现数据实时推送到前端
+
+native关键字告诉编译器  调用该方法在外部的定义    加载dll  System.loadLiberary    包含c声明的头文件.h      javac **.java    javah **

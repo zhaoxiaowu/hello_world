@@ -1,0 +1,8 @@
+on()方法在被选元素及子元素上添加一个或多个事件处理程序。
+$(selector).on(event,childSelector,data,function)
+
+$.data() 函数用于在指定的元素上存取数据，返回设置值。
+通过 data() 函数存取的数据都是临时数据，一旦页面刷新，之前存放的数据都将被移除。 
+$.data( element, key, value )
+
+使用jquery创建新元素的方法为：$(html标签)

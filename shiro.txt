@@ -1,0 +1,65 @@
+shiro是一个开源的权限管理的框架   实现认证 ，用户授权
+
+spring security
+
+shiro不依赖spring  不仅web 还可以实现c/s系统 分布式系统
+
+可以实现粗颗粒和细颗粒的权限管理
+
+
+subjiect主体
+
+securitymanager 安全管理器
+
+authenicator 认证器
+authorizer    授权器
+sessionManager  session管理器  ，一般web容器进行session管理
+sessionDao	通过sessionDao管理session数据，针对个性化session数据存储
+cacheManage 缓存管理器		主要对session和授权进行缓存，比如将授权数据通过cacheManager
+进行缓存管理，和ehcache整合进行缓存管理
+
+
+realm 域  相当于数据源  通过relam存取认证 授权相关数据。  zairelam中存取授权和认证的逻辑
+
+cryptography 加密方法  提供加密和解密算法  比如：md5散列算法
+
+shiro-core  shiro-web  shiro-ehcaches	shiro-spring  shiro-quartz
+
+shiro-all
+
+
+service  进行用户名密码校验
+
+control(记录session)
+
+创建专门的类记录用户身份信息
+
+用户id（主键）  用户账号 用户名称   菜单    权限
+
+粗颗粒和细颗粒
+
+关于级联删除 在数据库表设置外键，设置为级联删除，在程序中删除父表记录，字表有数据库mysql删除
+不建议使用
+
+通过下边程序进行删除
+先删除id关联的子表数据
+再删除父表（商品表）
+
+是否为公开地址
+
+是否为公共访问地址
+
+是否存在权限的URL中    不放在数据库 放在内存，session或者缓存中redis
+
+实现基于url的拦截器
+需要把所有url配置起来 不易维护
+url和权限的表示方式不全面
+
+设置记住我  下次访问某些url时可以不用登陆
+   
+
+    var html ='<div class="input-group input-group-sm float-sm-right" style="width: 350px;padding-right: 8px;">
+<button type="button" class="btn btn-default btn-add">添加</button>
+<button type="button" class="btn btn-default btn-update">修改</button>
+<button type="button" class="btn btn-default btn-delete">删除</button>
+</div>';

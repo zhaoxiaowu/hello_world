@@ -1,0 +1,133 @@
+##什么是mybatis?
+
+持久层框架，对JDBC的封装  让程序将主要精力放在sql上，通过mybatis提供的映射方式，自由灵活（半自动化，大部分需要程序员编写sql）生成满足需要的sql语句。
+并通过java对象和statement中的sql进行映射生成最终执行的sql语句，最后由mybatis框架执行sql并将结果映射成java对象并返回。
+
+##Mybatis解决jdbc编程的问题
+1、	数据库链接创建、释放频繁造成系统资源浪费从而影响系统性能，如果使用数据库链接池可解决此问题。
+解决：在SqlMapConfig.xml中配置数据链接池，使用连接池管理数据库链接。
+2、	Sql语句写在代码中造成代码不易维护，实际应用sql变化的可能较大，sql变动需要改变java代码。
+解决：将Sql语句配置在XXXXmapper.xml文件中与java代码分离。
+3、	向sql语句传参数麻烦，因为sql语句的where条件不一定，可能多也可能少，占位符需要和参数一一对应。
+解决：Mybatis自动将java对象映射至sql语句，通过statement中的parameterType定义输入参数的类型。
+4、	对结果集解析麻烦，sql变化导致解析代码变化，且解析前需要遍历，如果能将数据库记录封装成pojo对象解析比较方便。
+解决：Mybatis自动将sql执行结果映射至java对象，通过statement中的resultType定义输出结果的类型。
+
+
+##数据库分析
+1.每张表的内容
+2.每张表的重要字段设置    （非空字段，外键字段）
+3.数据库级别表的关系
+4.表和表之间业务关系
+
+##mybatis架构
+1、	mybatis配置
+SqlMapConfig.xml，此文件作为mybatis的全局配置文件，配置了mybatis的运行环境等信息。
+mapper.xml文件即sql映射文件，文件中配置了操作数据库的sql语句。此文件需要在SqlMapConfig.xml中加载。
+
+2、	通过mybatis环境等配置信息构造SqlSessionFactory即会话工厂
+3、	由会话工厂创建sqlSession即会话，操作数据库需要通过sqlSession进行。
+4、	mybatis底层自定义了Executor执行器接口操作数据库，Executor接口有两个实现，一个是基本执行器、一个是缓存执行器。
+5、	Mapped Statement也是mybatis一个底层封装对象，它包装了mybatis配置信息及sql映射信息等。mapper.xml文件中一个sql对应一个Mapped Statement对象，sql的id即是Mapped statement的id。
+6、	Mapped Statement对sql执行输入参数进行定义，包括HashMap、基本类型、pojo，Executor通过Mapped Statement在执行sql前将输入的java对象映射至sql中，输入参数映射就是jdbc编程中对preparedStatement设置参数。
+7、	Mapped Statement对sql执行输出结果进行定义，包括HashMap、基本类型、pojo，Executor通过Mapped Statement在执行sql后将输出结果映射至java对象中，输出结果映射过程相当于jdbc编程中对结果的解析处理过程。
+
+
+
+#{}占位符:占位 
+如果传入的是基本类型,那么#{}中的变量名称可以随意写 
+如果传入的参数是pojo类型,那么#{}中的变量名称必须是pojo中的属性.属性.属性…
+
+${}拼接符:字符串原样拼接 
+如果传入的是基本类型,那么${}中的变量名必须是value 
+如果传入的参数是pojo类型,那么${}中的变量名称必须是pojo中的属性.属性.属性… 
+
+注意:使用拼接符有可能造成sql注入
+
+selectOne查询一条记录 selectList可以查询一条或多条记录。
+
+##mysql自增主键返回
+##selectKey
+<!-- selectKey将主键返回，需要再返回 -->
+<selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+	select LAST_INSERT_ID()
+</selectKey>
+
+concat("%",#{username},"%")
+
+now()
+
+
+##Mysql使用 uuid实现主键
+<insert  id="insertUser" parameterType="cn.itcast.mybatis.po.User">
+<selectKey resultType="java.lang.String" order="BEFORE" 
+keyProperty="id">
+select uuid()
+</selectKey>
+insert into user(id,username,birthday,sex,address) 
+		 values(#{id},#{username},#{birthday},#{sex},#{address})
+</insert>
+注意这里使用的order是“BEFORE”
+
+##mybatis和hibernate区别
+1.它不完全是一个ORM框架，需要编写SQL语句
+2.hibernate 数据库无关性好
+
+
+#SqlMapConfig.xml
+    <settings>
+		<!-- mybatis控制台LOG输出 -->
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+    <typeAliases>
+        <package name="com.jt.sys.entity"/>
+        <package name="com.jt.common.vo"/>
+    </typeAliases>
+
+
+
+setting(全局配置参数)
+typeAliases
+
+
+    <!-- 整合mybatis -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+	   <property name="dataSource" ref="dataSource" />
+	   <property name="configLocation" value="classpath:mybatis-configs.xml"></property>
+	   <!-- 自动扫描mapping.xml文件 -->
+	   <property name="mapperLocations" >
+			<list><value>classpath:mapper/*.xml</value></list>
+	   </property>
+      </bean>
+
+resultMap 
+
+因为resultmap那段是我们自己指定的，可能指定的属性只是User的一部分，
+而且还可以设置默认值
+
+vo  接受表现层参数 
+
+where 1=1; 这个条件始终为True，在不定数量查询条件情况下
+，1=1可以很方便的规范语句。 
+
+动态sql
+不定数量查询条件
+<if  test="">
+
+where  自动向sql语句添加 where 关键字 并且去掉第一个and关键字
+
+封装
+<sql id=""> id唯一标识
+调用<include refid="">
+
+or查询效率指数下降 尽量避免  用in
+
+foreach 循环传入的几何参数
+collection   变量名称
+item      每次  存入这个变量
+open  
+close
+separator
+
+
+一对一   自动映射

@@ -1,0 +1,23 @@
+什么是序列化和反序列化
+
+把对象转化为字节序列的过程叫做对象的序列化   持久保存
+
+
+ObjectOutputStream  writeObject
+ObjectInputStream
+
+
+transient 不会被序列化
+
+
+序列化就是用来处理对象流的机制
+
+对象流引发的问题  其中最大问题就是对象引用
+
+
+
+保存的对象都获得一个序列号
+
+
+
+implements serializable

@@ -1,0 +1,39 @@
+web.xml 执行顺序
+
+servletContent(servlet上下文)->context-param->listen->filter->servlet
+https://blog.csdn.net/xiaoyaotan_111/article/details/53817918
+
+监听器listener   对项目起监听作用，它能感知包括request,session,application的初始化和属性变化
+过滤器filter 	 对请求起到过滤作用，在servlet之前
+servlet 对request和response进行处理的容器  在filter之后执行
+拦截器interceptor 就是对请求和返回进行拦截，它作用在servlet内部
+
+
+过滤器和拦截器的区别
+
+过滤器 依赖于servlet容器。可以对所有请求进行过滤，缺点是只在容器初始化时调用一次。
+主要用来进行过滤操作，获得我们想要获得的数据。比如：修改字符串编码，包括过滤低俗文字、危险字符
+
+过滤容易引发XSS的危险字符
+
+拦截器 在实现上基于Java的反射，属于面向切面编程（AOP）
+拦截器在control生命周期多次被调用，缺点是只能对control进行拦截
+
+在SpringMVC中使用拦截器（interceptor）拦截CSRF攻击
+
+
+spring拦截器
+实现了Spring 的HandlerInterceptor 接口
+preHandle 在请求处理前被调用
+每个Interceptor 的调用会依据它的声明顺序依次执行，而且最先执行的都是Interceptor 中的preHandle 方法
+
+所以可以在这个方法中进行一些前置初始化操作或者是对当前请求的一个预处理，
+也可以在这个方法中进行一些判断来决定请求是否要继续进行下去。
+
+当它返回为false 时，表示请求结束，后续的Interceptor 和Controller 都不会再执行；当返回值为true
+ 时就会继续调用下一个Interceptor 的preHandle 方法
+
+在controller调用之后被执行，但在试图渲染之前被调用  
+所以我们可以在这个方法中对Controller 处理之后的ModelAndView 对象进行操作
+
+afterCompletion这个方法的主要作用是用于进行资源清理工作的。

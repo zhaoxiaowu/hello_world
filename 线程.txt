@@ -1,0 +1,24 @@
+造成线程安全：
+1.存在共享数据     2.存在多条线程共同操作共享数据
+
+保证同一时刻有且只有一个线程在操作共享数据（互斥锁）
+
+synchronized   
+还可以保证一个线程的变化被其它线程所看到（完全可替代volatile）
+
+volatile
+线程A对一个volatile变量的修改，对于其它线程来说是可见的，即线程每次获取volatile变量的值都是最新的。
+禁止指令重排
+静态 synchronized 方法占用的锁是当前类的class对象
+
+Runable   Callable的区别(线程的接口)
+实现callable接口的任务线程能返回执行结果，而实现Runable接口的线程不能返回结果
+callable的call方法允许抛出异常   而runable的run方法只能在内部消化
+
+
+schedul
+
+
+	
+
+

@@ -1,0 +1,116 @@
+springmvc是一个spring模块，，基于mvc的设计模式。
+
+什么是mvc，是一种分层的架构模式，分为三层。controller 控制器  租用接受用户请求并响应结果
+
+view 视图层	model 模型层  pojo普通的java'对象
+
+
+springmvc框架核心
+
+
+DispatcherServlet  	前端控制器
+HanderMapping		处理器映射器
+HanderAdapter		处理器适配器
+viewResolver		前端控制器
+
+springmvc流程
+
+
+request->前端控制器-->handermapping(查找hander,根据xml，注解配置)-->前端控制器调用handeradapter
+（执行hander，适配器可以扩展对不同hander执行方式：比如：原始servlet开发，注解开发）-->handeradapter
+执行hander（hander是后端控制器，相当于模型）->返回modelandview
+
+视图解析器根据视图名解析出真正的视图   调用view的渲染试图方法将数据填充到request域
+
+
+springmvc完整流程
+第一步：用户发起request请求，请求至DispatcherServlet前端控制器
+第二步：DispatcherServlet前端控制器请求HandlerMapping处理器映射器查找Handler
+		DispatcherServlet：前端控制器，相当于中央调度器，各各组件都和前端控制器进行交互，降低了各各组			件之间耦合度。
+第三步：HandlerMapping处理器映射器，根据url及一些配置规则（xml配置、注解配置）查找Handler，将Handler返回给DispatcherServlet前端控制器
+第四步：DispatcherServlet前端控制器调用适配器执行Handler，有了适配器通过适配器去扩展对不同Handler执行方式（比如：原始servlet开发，注解开发）
+第五步：适配器执行Handler
+		Handler是后端控制器，当成模型。
+第六步：Handler执行完成返回ModelAndView
+		ModelAndView：springmvc的一个对象，对Model和view进行封装。
+第七步：适配器将ModelAndView返回给DispatcherServlet
+
+第八步：DispatcherServlet调用视图解析器进行视图解析，解析后生成view
+		视图解析器根据逻辑视图名解析出真正的视图。
+		View：springmvc视图封装对象，提供了很多view，jsp、freemarker、pdf、excel。。。
+		
+第九步：ViewResolver视图解析器给前端控制器返回view
+第十步：DispatcherServlet调用view的渲染视图的方法，将模型数据填充到request域 。
+第十一步：DispatcherServlet向用户响应结果(jsp页面、json数据。。。。)
+
+
+
+
+前端控制器配置
+<!-- Spring mvc 前端控制器 -->
+  <servlet>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <param-value>classpath:spring-*.xml</param-value>
+    </init-param>
+    <load-on-startup>1</load-on-startup>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>dispatcherServlet</servlet-name>
+    <url-pattern>*.do</url-pattern>
+  </servlet-mapping>
+
+
+contextConfigLocation不配置的话会查找classpath 下的  servlet名称-servlet.xml
+
+可以配置/,此工程的所有请求有springmvc解析，此方式可以实现restful方式，需要处理
+静态文件不能有springmvc处理
+
+
+可以配置*.do 或者 .action   此方法常用
+
+不可以/* ，返回的jsp由springmvc解析这是不对的。
+
+
+
+
+
+
+在springmvc.xml配置三大组件（处理器映射器(根据url查找hander)，适配器（扩展适配器支持不同的hander），视图解析器）
+
+
+
+SSM整合配置
+applicationContext-dao.xml---配置数据源、SqlSessionFactory、mapper扫描器
+applicationContext-service.xml---配置service接口
+applicationContext-transaction.xml--事务管理
+springmvc.xml---springmvc的配置，配置处理器映射器、适配器、视图解析器
+SqlMapConfig.xml---mybatis的配置文件，配置别名、settings、mapper
+
+
+    <!-- 自动扫描该包 -->
+    <context:component-scan base-package="com.jt" />
+    <!-- 启用mvc注解 、解决分发配置-->
+    <mvc:annotation-driven />
+    <!-- 定义跳转的文件的前后缀 ，视图模式配置 -->
+    <bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 自动给后面action的方法return的字符串加上前缀和后缀，变成一个 可用的url地址 -->
+        <property name="prefix" value="/WEB-INF/pages/" />
+        <property name="suffix" value=".html"></property>
+    </bean>  
+
+
+
+使用声明式的事务控制
+
+事务管理器
+
+
+通知
+
+
+
+
+

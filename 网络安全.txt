@@ -1,0 +1,4 @@
+xss:跨站脚本攻击
+web用户可以把代码植入到提供页面的网站上
+CSRF（Cross-site request forgery）跨站请求伪造
+XSS利用站点内的信任用户，而CSRF则通过伪装来自受信任用户的请求来利用受信任的网站

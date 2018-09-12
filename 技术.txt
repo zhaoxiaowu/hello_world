@@ -1,0 +1,27 @@
+SOA架构  Dubbox   zookeeper
+
+angularjs adminlte  bootstrap   nodejs
+
+spring springmvc mybatis   
+
+springsecurity  shiro       xss csrf        bcrypt加密
+
+luncene  solr          
+
+redis   jedis                spring data  redis    
+
+freemarker
+
+JMS                             spring JMS
+
+springboot  短信解决方案
+
+CAS
+
+微信扫码
+
+nginx
+
+任务调度
+
+

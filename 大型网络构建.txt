@@ -1,0 +1,10 @@
+代理转发请求（nginx)
+
+
+集群session     缓存    SOA服务化    消息中间件   分布式文件服务
+
+
+@JsonView可以过滤pojo属性，使Controller在返回json时,某些属性不显示，比如密码
+
+
+腾讯云短信  自定义短信的发送频率

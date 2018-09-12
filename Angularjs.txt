@@ -1,0 +1,52 @@
+Angularjs 特性  MVC 模块化 双向绑定 依赖注 
+
+1.MVC模式     展现  ，数据   ，逻辑组件  松耦合
+
+model  数据    angular变量{$scope.XX}
+view   	       数据的呈现  HTml+Directive（指令）	
+control   	       操纵数据，就是function     数据的增删改 查
+
+控制器 调用服务获取数据 对数据进行操作
+2.双向绑定
+影响变量值 视图会改变  
+视图改变 影响变量值 
+3.依赖注入
+某个 对象以来的其它对象无需手工编程
+4.模块化设计
+高内聚（模块之内相关联）低耦合（模块之间减少依赖）
+1.ng  ngRoute
+2.angular.module('模块名',[])
+
+表达式{{}}
+双向绑定  ng-model=“”
+初始化指令  ng-init ="name='AAA'"
+ng-control
+控制器    
+<script>
+var app=angular.module('myApp',[]); //定义了一个叫myApp的模块
+//定义控制器
+app.controller('myController',function($scope){
+$scope.add=function(){
+	return parseInt($scope.x)+parseInt($scope.y);
+	}
+});
+scope 视图层与试图层之间交换数据的桥梁
+
+ng-click  单击
+
+循环数组 ng-repeat 重复
+
+内置服务
+$scope.findAll=function(){
+	$http.get('data.json').success(
+		function(response){
+			$scope.list=response;
+		}					
+	);				
+}	
+
+app.service("brandService",function($http){}
+		
+控制器继承
+
+

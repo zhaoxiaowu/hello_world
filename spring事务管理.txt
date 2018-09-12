@@ -1,0 +1,64 @@
+事务  事务就是一系列的动作，这些动作必须全部完成，失败的化就会回滚到最开始的状态。
+
+
+事务的四个特征
+
+原子性         原子性是指事务是一个不可再分割的工作单位
+一致性	一旦事务完成，系统必须保整业务在一致的状态，而不会是部分完成部分失败。在现实中的数据不应该被破坏。
+隔离性	每个事务的数据与其它事务隔离
+持久性	一旦事务完成，无论发生什么系统错误，它的结果都不应该受到影响
+
+spring事务
+
+spring并不是直接管理事务，而是提供多种事务管理器，他将事务委托给 持久层框架的事务来实现
+
+隔离级别：一个事务可能受其它事务影响的程度。
+
+
+脏读		读取未提交的数据
+
+不可重复读	两次读取的数据不一致，通常是另一个事务在两次查询期间进行了更新。
+
+幻读		两次读取的数据不一致，通常是另一个事务在两次查询期间进行了插入或删除
+
+不可重复读和幻读都表现为两次读取的结果不一致。但如果你从控制的角度来看, 两者的区别就比较大。 
+对于前者, 只需要锁住满足条件的记录。 
+对于后者, 要锁住满足条件及其相近的记录。
+
+
+只读事务（@Transactional(readOnly = true)）
+在将事务设置成只读后，相当于将数据库设置成只读数据库，此时若要进行写的操作，会出现错误
+
+事务超时
+因为事务可能涉及对后端数据库的锁定，事务不能长时间运行
+
+
+编程式和声明式事务的区别
+
+
+编程式事务允许用户在代码精确定义事务的边界，而声明式事务（基于AOP）
+有助于用户将操作和食物规则进行解耦。
+简单地说，编程式事务侵入到了业务代码里面，但是提供了更加详细的事务管理；而声明式事务由于基于AOP，
+所以既能起到事务管理的作用，又可以不影响业务代码的具体实现。
+
+<tx:advice id="txAdvice" transaction-manager="txManager">  
+<tx:attributes>  
+           <tx:method name="save*" propagation="REQUIRED" />  
+           <tx:method name="add*" propagation="REQUIRED" />  
+           <tx:method name="create*" propagation="REQUIRED" />  
+           <tx:method name="insert*" propagation="REQUIRED" />  
+           <tx:method name="update*" propagation="REQUIRED" />  
+           <tx:method name="merge*" propagation="REQUIRED" />  
+           <tx:method name="del*" propagation="REQUIRED" />  
+           <tx:method name="remove*" propagation="REQUIRED" />  
+           <tx:method name="put*" propagation="REQUIRED" />  
+           <tx:method name="get*" propagation="SUPPORTS" read-only="true" />  
+           <tx:method name="count*" propagation="SUPPORTS" read-only="true" />  
+          <tx:method name="find*" propagation="SUPPORTS" read-only="true" />  
+          <tx:method name="list*" propagation="SUPPORTS" read-only="true" />  
+          <tx:method name="*" propagation="SUPPORTS" read-only="true" />  
+       </tx:attributes>  
+</tx:advice>  
+<aop:config>  
+       <aop:pointcut id="txPointcut" expression="execution(* cn.javass..service.*.*(..))" />  
+       <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />  

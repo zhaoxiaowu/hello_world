@@ -1,0 +1,27 @@
+后来发现原来是 springmvc整合jackson之后，
+将从数据库中获取到的Date类型的对象传给前台时，
+jackson会将date类型的对象转换成long，
+
+
+https://blog.csdn.net/qq_29992111/article/details/78743882
+
+
+
+public class CustomDateSerializer extends JsonSerializer {
+ 
+ 
+    public void serialize(Object arg0, JsonGenerator arg1, SerializerProvider arg2)
+            throws IOException, JsonProcessingException {
+ 
+            Date value=(Date)arg0;
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");  
+            String formattedDate = formatter.format(value);  
+            arg1.writeString(formattedDate); 
+    }
+ 
+ 
+}
+ 
+在需要进行序列化字段前加上注解  如：
+ 
+    @JsonSerialize(using = CustomDateSerializer.class) 

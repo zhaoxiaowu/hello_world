@@ -1,0 +1,33 @@
+##########==和equal的区别
+
+==号在比较基本数据类型 比较的是值
+比较两个对象比较两个对象的内存地址
+
+equals 方法存在Object类，所有类中的equals方法继承自Object方法
+而Object的equals方法依赖于==号，那么在没有重写equals方法的时候和==效果一样
+重写后比较的是两个对象的值
+
+https://www.cnblogs.com/jesonjason/p/5492208.html
+hashcode是从object继承过来，用于判断两个对象是否相等
+计算出对象实例的哈希码，并返回哈希码，又称为散列函数
+
+
+两个obj，如果equals相等，hashcode一定相等
+
+两个obj，如果hashcode相等，equals不一定相等
+
+　　可以考虑在集合中，判断两个对象是否相等的规则是：
+　　　　第一步，如果hashCode()相等，则查看第二步，否则不相等;
+　　　　第二步，查看equals()是否相等，如果相等，则两obj相等，否则还是不相等。
+
+之所以有hashCode方法，是因为在批量的对象比较中，hashCode要比equals来得快，
+很多集合都用到了hashCode，比如HashTable。
+
+JVM没new一个Object都会将这个Object丢到hash哈希表中。
+
+规定:如果两个对象的equals方法相等，那么调用方hashcode必须产生相等的结果
+
+
+数组的特点：寻址容易，插入和删除困难
+链表的特点：寻址困难，插入和删除容易
+哈希表

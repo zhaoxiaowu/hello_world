@@ -1,0 +1,3 @@
+produces
+一旦使用了produces，系统将不再使用HttpMessageConverter适配器
+，mvc注解完全可以不要。
