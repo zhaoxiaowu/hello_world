@@ -1,0 +1,54 @@
+网页静态化技术和缓存技术的共同点都是为了减轻数据库的访问压力，但是具体的应用场景不同，
+缓存比较适合小规模的数据，而网页静态化比较适合大规模且相对变化不太频繁的数据。另外网页静态化还有利于SEO。
+另外我们如果将网页以纯静态化的形式展现，就可以使用Nginx这样的高性能的web服务器来部署。Nginx可以承载5万的并发，而Tomcat只有几百
+
+
+什么是freemarker？
+freemarker是一个java语言编写的模板 引擎  ，它基于模板生成文本输出。
+freeMarker与web容器无关       
+
+模板文件中四种元素
+  1、文本，直接输出的部分
+  2、注释，即<#--...-->格式不会输出
+  3、插值（Interpolation）：即${..}部分,将使用数据模型中的部分替代输出
+  4、FTL指令：FreeMarker指令，和HTML标记类似，名字前加#予以区分，不会输出。
+
+指令
+ include指令
+<#include "head.ftl">
+
+<#if success=true>
+  你已通过实名认证
+<#else>  
+  你未通过实名认证
+</#if>
+
+<#list goodsList as goods>
+  ${goods_index+1} 商品名称： ${goods.name} 价格：${goods.price}<br>
+</#list>
+
+内嵌函数 ${goodsList?size}  条记录
+
+<#assign data=text?eval />
+
+当前日期：${today?date} <br>
+当前时间：${today?time} <br>   
+当前日期+时间：${today?datetime} <br>        
+日期格式化：  ${today?string("yyyy年MM月")}
+
+${point?c}
+
+用法为:variable??,如果该变量存在,返回true,否则返回false 
+
+  ${aaa!'-'}
+在代码中不对aaa赋值，也不会报错了 ，当aaa为null则返回！后边的内容-
+
+
+Configuration configuration = freeMarkerConfig.getConfiguration();
+			Template template = configuration.getTemplate("item.ftl");
+//传递数据
+			Writer out=new FileWriter(pagedir+goodsId+".html");
+			template.process(dataModel, out);
+
+
+                             
